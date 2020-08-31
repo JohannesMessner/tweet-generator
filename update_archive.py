@@ -31,12 +31,7 @@ def get_archive_tweets(archive_filename):
     return set(tweets)
 
 
-def union(list1, list2):
-    # union without duplicates
-    return list(set(list1 + list2))
-
-
-def main():
+def update_archive():
     api = authenticate()
 
     user_id = 'realDonaldTrump'  # specify a twitter user
@@ -48,6 +43,10 @@ def main():
     tweets = pd.DataFrame(list(set.union(latest_tweets, archive_tweets)))
     # write back updated set
     tweets.to_csv('trump.csv')
+
+
+def main():
+    update_archive()
 
 
 if __name__ == '__main__':
