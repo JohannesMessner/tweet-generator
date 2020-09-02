@@ -57,12 +57,12 @@ def generate_tweet(model, token_id_map, id_token_map, degree, padding_token, max
     tweet = ''
     padding = ((str(token_id_map[padding_token]) + ' ')*degree)[:-1]
     memory = padding  # how far back the model looks in time to generate words
-    start_successors, start_probs = model[memory]
-    next_id = np.random.choice(start_successors, p=start_probs)
+    start_successors, start_probs = model[memory]  # beginning of the tweet
+    next_id = np.random.choice(start_successors, p=start_probs)  # id of the next word, sampled from the model
     next_token = id_token_map[next_id]
     tweet += next_token
     while next_token != padding_token and len(tweet) <= maxlen:
-        memory_list = memory.split()[1:] + [next_id]
+        memory_list = memory.split()[1:] + [next_id]  # shift memory one token (word) forward
         memory = ''
         for id in memory_list:
             memory += str(id) + ' '
@@ -71,7 +71,7 @@ def generate_tweet(model, token_id_map, id_token_map, degree, padding_token, max
         next_id = np.random.choice(successors, p=probs)
         next_token = id_token_map[next_id]
         tweet += ' ' + next_token
-    return tweet[:-1]
+    return tweet[:-1]  # cut off padding token at the end
 
 
 def map_tokens_to_id(tokens):
