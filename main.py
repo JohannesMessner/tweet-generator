@@ -29,6 +29,18 @@ def main():
                 print('Refresh done')
             except:
                 print_authentication_fail()
+        elif command.startswith('switch'):
+            command_split = command.split()
+            user_id = command_split[1]
+            filename = user_id + '.csv'
+            try:
+                update_archive.update_archive(user_id)
+                m = model.Model(n, filename)
+                m.initialize()
+                print('Refresh done')
+            except:
+                print_authentication_fail()
+
         elif command == 'help':
             print_help()
         command = input()
@@ -36,7 +48,7 @@ def main():
 
 def print_authentication_fail():
     print('Twitter authentication failed')
-    print('Enter Twitter api credentials directly or refer to the readme.txt for further information')
+    print('Enter Twitter api credentials directly or refer to the readme for further information')
 
 
 def print_intro():
@@ -48,11 +60,13 @@ def print_intro():
 def print_help():
     print('The following command are available:')
     print('-------------------------------------')
-    print('"t": \t \t Creates a new tweet')
+    print('"t": \t \t Creates a new tweet.')
     print('"refresh data [<api_key> <api_secret> <access_token> <access_token_secret>]":'
           '\t Pulls data from Twitter and refreshes the language model of the currently simulated'
-          'Twitter user')
-    print('"q": \t \t Quits the app')
+          'Twitter user.')
+    print('switch <Twitter-handle>: \t Switches the model to a different twitter user.'
+          'Pulls their tweets from the api. Requires a credentials-file (see readme).')
+    print('"q": \t \t Quits the app.')
 
 
 if __name__ == '__main__':
