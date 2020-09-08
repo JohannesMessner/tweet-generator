@@ -31,18 +31,18 @@ def get_archive_tweets(archive_filename):
     return set(tweets)
 
 
-def update_archive():
+def update_archive(user_id='realDonaldTrump'):
     api = authenticate()
 
-    user_id = 'realDonaldTrump'  # specify a twitter user
     # get tweets from users timeline
     latest_tweets = get_new_tweets(user_id, api)
     # tweets that are already stored locally
-    archive_tweets = get_archive_tweets('trump.csv')
+    filename = user_id + '.csv'
+    archive_tweets = get_archive_tweets(filename)
     # union of both sets
     tweets = pd.DataFrame(list(set.union(latest_tweets, archive_tweets)))
     # write back updated set
-    tweets.to_csv('trump.csv')
+    tweets.to_csv(filename)
 
 
 def main():

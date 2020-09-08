@@ -104,7 +104,7 @@ class Model():
 
 
 def main():
-    m = Model(2, 'trump.csv')
+    m = Model(2, 'realDonaldTrump.csv')
     m.initialize()
     for _ in range(10):
         print(m.generate_tweet())

@@ -9,8 +9,8 @@ def main():
           'sentences but might reproduce real tweets 1:1')
     n = int(input())
     print('You can also select who the tweets should emulate.')
-    print('At the moment only Donald Trump is available, so type "Trump"')
-    filename = input().lower() + '.csv'
+    print('At the moment only Donald Trump is available, so type "realDonaldTrump"')
+    filename = input() + '.csv'
     m = model.Model(n, filename)
     m.initialize()
     print_intro()
