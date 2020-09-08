@@ -2,6 +2,7 @@ import json
 import tweepy
 import numpy as np
 import pandas as pd
+import os
 
 
 def authenticate():
@@ -26,6 +27,9 @@ def get_new_tweets(user_id, api):
 
 
 def get_archive_tweets(archive_filename):
+    if not os.path.isfile(archive_filename):
+        open(archive_filename, 'x').close()  # create the file
+        return set()
     tweets = pd.read_csv(archive_filename).to_numpy().tolist()
     tweets = list(map(lambda x: x[1], tweets))
     return set(tweets)
