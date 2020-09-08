@@ -5,12 +5,17 @@ import pandas as pd
 import os
 
 
-def authenticate():
-    # a file named credentials.json must contain twitter-developers/api credentials in order to access online tweets
-    with open('credentials.json') as f:
-        credentials = json.load(f)
-        auth = tweepy.OAuthHandler(credentials['api_key'], credentials['api_secret'])
-        auth.set_access_token(credentials['access_token'], credentials['access_token_secret'])
+def authenticate(api_key=None, api_secret=None, access_token=None, access_secret=None):
+    if api_key is None or api_secret is None or access_token is None or access_secret is None:
+        # a file named credentials.json must contain twitter-developers/api credentials in order to access online tweets
+        with open('credentials.json') as f:
+            credentials = json.load(f)
+            auth = tweepy.OAuthHandler(credentials['api_key'], credentials['api_secret'])
+            auth.set_access_token(credentials['access_token'], credentials['access_token_secret'])
+            return tweepy.API(auth)
+    else:
+        auth = tweepy.OAuthHandler(api_key, api_secret)
+        auth.set_access_token(access_token, access_secret)
         return tweepy.API(auth)
 
 
@@ -35,8 +40,8 @@ def get_archive_tweets(archive_filename):
     return set(tweets)
 
 
-def update_archive(user_id='realDonaldTrump'):
-    api = authenticate()
+def update_archive(user_id='realDonaldTrump', api_key=None, api_secret=None, access_token=None, access_secret=None):
+    api = authenticate(api_key, api_secret, access_token, access_secret)
 
     # get tweets from users timeline
     latest_tweets = get_new_tweets(user_id, api)

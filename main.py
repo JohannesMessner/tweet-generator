@@ -3,40 +3,56 @@ import update_archive
 
 
 def main():
-    print('Hey, wanna generate some tweets?')
-    print('Specify how closely the generated tweets should match the originals (1-3).')
-    print('A low number results in more random tweets that might be garbage, a high number generates more proper'
-          'sentences but might reproduce real tweets 1:1')
-    n = int(input())
-    print('You can also select who the tweets should emulate.')
-    print('At the moment only Donald Trump is available, so type "realDonaldTrump"')
-    filename = input() + '.csv'
+    print_intro()
+    user_id = 'realDonaldTrump'
+    filename = user_id + '.csv'
+    n = 2
     m = model.Model(n, filename)
     m.initialize()
-    print_intro()
     command = input()
     while command != 'q':
         if command == 't':
             print(m.generate_tweet())
-        elif command == 'refresh data':
-            update_archive.update_archive()
-            m = model.Model(n, filename)
-            m.initialize()
-            print('Refresh done')
+        elif command.startswith('refresh data'):
+            command_split = command.split()
+            if len(command_split) <= 2:  # no authentication given -> use credentials-file
+                auth_args = (None, None, None, None)
+            elif len(command_split) == 6:  # use directly provided api tokens and secrets
+                auth_args = command_split[2:]
+            else:
+                print('Wrong number of command arguments')
+                continue
+            try:
+                update_archive.update_archive(user_id, *auth_args)
+                m = model.Model(n, filename)
+                m.initialize()
+                print('Refresh done')
+            except:
+                print_authentication_fail()
         elif command == 'help':
             print_help()
         command = input()
 
 
+def print_authentication_fail():
+    print('Twitter authentication failed')
+    print('Enter Twitter api credentials directly or refer to the readme.txt for further information')
+
+
 def print_intro():
+    print('Wanna generate some tweets?')
+    print('Type "t" to generate a Trump-Tweet!')
     print('Type "help" for help and further information')
 
 
 def print_help():
     print('The following command are available:')
     print('-------------------------------------')
-    print('"t": \t Creates a new tweet')
-    print('"refresh data": \t Pulls data from Twitter and refreshes the language model')
+    print('"t": \t \t Creates a new tweet')
+    print('"refresh data [<api_key> <api_secret> <access_token> <access_token_secret>]":'
+          '\t Pulls data from Twitter and refreshes the language model of the currently simulated'
+          'Twitter user')
+    print('"q": \t \t Quits the app')
 
 
 if __name__ == '__main__':
