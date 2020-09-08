@@ -10,7 +10,7 @@ Then, the following command can be used:
 
 - "t": generates a new tweet based on the current language model. The default model is Donald Trump.
 - "refresh data [<api_key> <api_secret> <access_token> <access_token_secret>]": pulls the newest tweets corresponding to the current model from twitter and updates the language model. The optional arguments are required for authentication whenever no credentials-file is being used (see below for details).
-- "switch <Twitter-handle>": Switches to a new Twitter-account as the basis for the language model and pulls its tweets. This command requires the use of credentials-file (see below). The Twitter-handle has to be entered without the leading @-character.
+- "switch \<Twitter-handle\>": Switches to a new Twitter-account as the basis for the language model and pulls its tweets. This command requires the use of credentials-file (see below). The Twitter-handle has to be entered without the leading @-character.
 - "q": Quits the application.
   
 ## How to authenticate / credentials
